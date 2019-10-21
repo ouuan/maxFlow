@@ -64,6 +64,7 @@ public:
 		add(u, v, w);
 		add(v, u, 0);
 	}
+	void del(int x) { cap[x << 1] = cap[x << 1 | 1] = 0; }
 	bool bfs(int s, int t)
 	{
 		dep.clear();
