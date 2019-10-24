@@ -46,10 +46,7 @@ public:
 	void init(int _n)
 	{
 		head.clear();
-		head.resize(_n + 1, 0);
-		nxt.resize(2);
-		to.resize(2);
-		cap.resize(2);
+		head.resize(_n + 1, -1);
 	}
 	void init() { init(head.size() - 1); }
 	void add(int u, int v, ll w)
@@ -64,7 +61,7 @@ public:
 		add(u, v, w);
 		add(v, u, 0);
 	}
-	void del(int x) { cap[x << 1] = cap[x << 1 | 1] = 0; }
+	void del(int x) { cap[(x - 1) << 1] = cap[(x - 1) << 1 | 1] = 0; }
 	bool bfs(int s, int t)
 	{
 		dep.clear();
@@ -75,7 +72,7 @@ public:
 		{
 			int u = q.front();
 			q.pop();
-			for (int i = head[u]; i; i = nxt[i])
+			for (int i = head[u]; ~i; i = nxt[i])
 			{
 				int v = to[i];
 				ll w = cap[i];
@@ -92,7 +89,7 @@ public:
 	{
 		if (dep[u] == dep[t]) return u == t ? flow : 0;
 		ll out = 0;
-		for (int& i = cur[u]; i; i = nxt[i])
+		for (int& i = cur[u]; ~i; i = nxt[i])
 		{
 			int v = to[i];
 			ll w = cap[i];
@@ -117,7 +114,7 @@ public:
 		}
 		return out;
 	}
-	ll getflow(int x) const { return cap[x << 1 | 1]; }
+	ll getflow(int x) const { return cap[(x - 1) << 1 | 1]; }
 };
 
 #endif
